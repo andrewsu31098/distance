@@ -1,0 +1,25 @@
+#Navvy {
+}
+
+.bg-my-white {
+  background-color: white;
+}
+
+#Navvy #Brand {
+  font-family: "Bungee", cursive;
+  font-weight: 500px;
+  color: #6d95fb;
+  -webkit-text-stroke-width: 1.5px;
+  -webkit-text-stroke-color: #4b644a;
+}
+
+#Navvy #Brand #second {
+  color: black;
+}
+
+#Navvy #Login {
+  margin-right: 10px;
+}
+
+#Navvy #Signup {
+}

@@ -1,0 +1,103 @@
+.PlayScreen {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(41, 56, 146, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  border-radius: 25px;
+  box-shadow: 2px 2px 8px;
+  padding: 2em 5em;
+}
+
+.inputRow {
+  display: flex;
+  justify-content: start;
+  margin-bottom: 1em;
+}
+
+.inputBlock {
+  width: 320px;
+  height: 180px;
+  border-radius: 15px;
+  background-color: #484848;
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.451);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 1em;
+  font-size: 2vw;
+  color: white;
+  font-weight: bold;
+}
+
+.infoBlock {
+  width: 320px;
+  height: 180px;
+  border-radius: 15px;
+  background-color: #484848;
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.451);
+  margin-right: 1em;
+  font-size: 2vw;
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.scoreBlock {
+  width: 480px;
+  height: 180px;
+  border-radius: 15px;
+  background-color: #484848;
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.451);
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: flex-start;
+  font-size: 2vw;
+  color: white;
+  font-weight: bold;
+  padding: 2em;
+}
+
+.overBlock {
+  width: 320px;
+  height: 180px;
+  border-radius: 15px;
+  background-color: #484848;
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.451);
+  margin-right: 1em;
+  font-size: 2vw;
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.scoreBlock div {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.scoreBlock div span {
+  white-space: nowrap;
+}
+.scoreBlock div span img {
+  margin: 0 0.5em;
+}
+.bannerImg {
+  display: flex;
+  min-width: 160px;
+  min-height: 45px;
+  border-radius: 15px;
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.451);
+  background-color: #618cfb;
+}
+
+.heartIcon {
+  width: 1em;
+}
