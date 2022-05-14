@@ -1,0 +1,23 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-distance-dev-224738-authRole",
+      "UnauthRoleArn": "arn:aws:iam::845308714608:role/amplify-distance-dev-224738-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::845308714608:role/amplify-distance-dev-224738-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-distance-dev-224738-deployment",
+      "UnauthRoleName": "amplify-distance-dev-224738-unauthRole",
+      "StackName": "amplify-distance-dev-224738",
+      "StackId": "arn:aws:cloudformation:us-east-1:845308714608:stack/amplify-distance-dev-224738/b417a010-d024-11ec-8683-12149972aea3",
+      "AmplifyAppId": "dkspr3qc7qzdn"
+    },
+    "categories": {
+      "function": {
+        "calculateDistance": {
+          "deploymentBucketName": "amplify-distance-dev-224738-deployment",
+          "s3Key": "amplify-builds/calculateDistance-37356b492b6a346e7258-build.zip"
+        }
+      }
+    }
+  }
+}

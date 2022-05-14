@@ -1,7 +1,7 @@
 import "./PlayScreen.css";
 import { Form, Button } from "react-bootstrap";
-import nycbanner from "./nycbanner.png";
-import cairobanner from "../../assets/cairobanner.png";
+import cairobanner from "../../assets/cairo.png";
+import labanner from "../../assets/los angeles.png";
 import heart from "../../assets/heart.png";
 
 const PLAY = 33;
@@ -12,6 +12,10 @@ function PlayScreen(props) {
 
   for (let i = 0; i < props.userLives; i++) {
     hearts.push(<img key={i} className="heartIcon" src={heart} />);
+  }
+
+  function onFileUpload(e) {
+    alert(e.target.files[0].name.replace(".png", "looneytunes"));
   }
 
   return (
@@ -27,6 +31,10 @@ function PlayScreen(props) {
                   type="text"
                   placeholder="Miles"
                 />
+                <Form.Group controlId="formFile" className="mb-3">
+                  <Form.Label>Default file input example</Form.Label>
+                  <Form.Control type="file" onChange={onFileUpload} />
+                </Form.Group>
               </Form.Group>
 
               <Button variant="primary" type="submit">
@@ -82,7 +90,7 @@ function PlayScreen(props) {
         </div>
       )}
 
-      <img className="bannerImg" src={cairobanner} />
+      <img className="bannerImg" src={labanner} />
     </div>
   );
 }

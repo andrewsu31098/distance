@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/distance": {
+      "name": "/distance",
+      "lambdaFunction": "calculateDistance",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

@@ -1,7 +1,6 @@
 import "./QuizContainer.css";
 import StartScreen from "../StartScreen/StartScreen";
 import PlayScreen from "../PlayScreen/PlayScreen";
-import GameOverScreen from "../GameOverScreen/GameOverScreen";
 
 import { useState, useEffect } from "react";
 
@@ -11,11 +10,13 @@ const PLAY = 33;
 const OVER = 44;
 
 function QuizContainer(props) {
+  // screenState keeps track of 1 of 4 screens. Start. Ready. Play. Over.
   const [screenState, setScreen] = useState(START);
   const [userZIP, setZIP] = useState("");
   const [userAnswer, setAnswer] = useState("");
   const [userLives, setLives] = useState(3);
   const [userScore, setScore] = useState(0);
+  const [currentCity, setCity] = useState("cairo");
 
   function onStartClick(event) {
     setScreen(READY);
