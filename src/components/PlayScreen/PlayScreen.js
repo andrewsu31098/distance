@@ -4,10 +4,42 @@ import cairobanner from "../../assets/cairo.png";
 import labanner from "../../assets/los angeles.png";
 import heart from "../../assets/heart.png";
 
+import { useEffect, useState } from "react";
+import { API } from "aws-amplify";
+
 const PLAY = 33;
 const OVER = 44;
 
 function PlayScreen(props) {
+  const [serverAnswer, setServerAnswer] = useState("?");
+
+  async function calldistanceAPI() {
+    try {
+      let params = {
+        queryStringParameters: {
+          email: "uncleandy",
+          lat1: "34.0522",
+          lon1: "118.2437",
+          lat2: "40.7128",
+          lon2: "80.006",
+        },
+      };
+
+      const resultDistance = await API.get("distanceAPI", "/distance", params);
+      const cleanedResult = parseInt(resultDistance).toString();
+      props.judgePlayer(props.userAnswer, cleanedResult);
+      setServerAnswer(cleanedResult);
+      console.log(cleanedResult);
+    } catch (err) {
+      console.log("This is the error:");
+      console.log({ err });
+    }
+  }
+
+  // useEffect(() => {
+  //   callAPI();
+  // }, []);
+
   var hearts = [];
 
   for (let i = 0; i < props.userLives; i++) {
@@ -17,13 +49,17 @@ function PlayScreen(props) {
   function onFileUpload(e) {
     alert(e.target.files[0].name.replace(".png", "looneytunes"));
   }
+  function onAnswerSubmit(e) {
+    e.preventDefault();
+    calldistanceAPI();
+  }
 
   return (
     <div className="PlayScreen">
       {props.screenState === PLAY && (
         <div className="inputRow">
           <div className="inputBlock">
-            <Form onSubmit={props.onAnswerSubmit}>
+            <Form onSubmit={onAnswerSubmit}>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Your Guess: </Form.Label>
                 <Form.Control
@@ -31,10 +67,10 @@ function PlayScreen(props) {
                   type="text"
                   placeholder="Miles"
                 />
-                <Form.Group controlId="formFile" className="mb-3">
+                {/* <Form.Group controlId="formFile" className="mb-3">
                   <Form.Label>Default file input example</Form.Label>
                   <Form.Control type="file" onChange={onFileUpload} />
-                </Form.Group>
+                </Form.Group> */}
               </Form.Group>
 
               <Button variant="primary" type="submit">
@@ -48,7 +84,7 @@ function PlayScreen(props) {
             </div>
             <div>
               <span>Miles: </span>
-              <span>?</span>
+              <span>{serverAnswer}</span>
             </div>
           </div>
           <div className="scoreBlock">

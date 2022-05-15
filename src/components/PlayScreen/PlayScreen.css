@@ -47,6 +47,14 @@
   justify-content: space-evenly;
 }
 
+.infoBlock div:first-child {
+  border-bottom: 5px solid black;
+}
+.infoBlock div:nth-child(2) span {
+  color: #ffbfa0;
+  font-weight: 800;
+}
+
 .scoreBlock {
   width: 480px;
   height: 180px;

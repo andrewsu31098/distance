@@ -15,7 +15,7 @@
       "function": {
         "calculateDistance": {
           "deploymentBucketName": "amplify-distance-dev-224738-deployment",
-          "s3Key": "amplify-builds/calculateDistance-37356b492b6a346e7258-build.zip"
+          "s3Key": "amplify-builds/calculateDistance-55794571617769464467-build.zip"
         }
       }
     }

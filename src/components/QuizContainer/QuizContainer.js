@@ -9,6 +9,13 @@ const READY = 22;
 const PLAY = 33;
 const OVER = 44;
 
+function scoreAnswer(guess, answer) {
+  let guessInt = parseInt(guess);
+  let answerInt = parseInt(answer);
+  let score = 100 - (100 * Math.abs(answerInt - guessInt)) / answerInt;
+  return parseInt(score);
+}
+
 function QuizContainer(props) {
   // screenState keeps track of 1 of 4 screens. Start. Ready. Play. Over.
   const [screenState, setScreen] = useState(START);
@@ -18,13 +25,20 @@ function QuizContainer(props) {
   const [userScore, setScore] = useState(0);
   const [currentCity, setCity] = useState("cairo");
 
+  function judgePlayer(guess, answer) {
+    let score = scoreAnswer(guess, answer);
+    setScore(userScore + score);
+    if (score <= 75) {
+      setLives(userLives - 1);
+    }
+  }
+
   function onStartClick(event) {
     setScreen(READY);
   }
   function onZIPSubmit(event) {
     event.preventDefault();
     setScreen(PLAY);
-    alert(userZIP);
   }
   function onZIPChange(event) {
     setZIP(event.target.value);
@@ -34,11 +48,6 @@ function QuizContainer(props) {
   function onAnswerChange(event) {
     console.log(event.target.value);
     setAnswer(event.target.value);
-  }
-  function onAnswerSubmit(event) {
-    event.preventDefault();
-    setScore(userScore + 20);
-    setLives(Math.max(0, userLives - 1));
   }
 
   function onRetrySubmit(event) {
@@ -77,17 +86,17 @@ function QuizContainer(props) {
         return (
           <PlayScreen
             onAnswerChange={onAnswerChange}
-            onAnswerSubmit={onAnswerSubmit}
             userLives={userLives}
             userScore={userScore}
+            userAnswer={userAnswer}
             screenState={screenState}
+            judgePlayer={judgePlayer}
           />
         );
       case OVER:
         return (
           <PlayScreen
             onAnswerChange={onAnswerChange}
-            onAnswerSubmit={onAnswerSubmit}
             userLives={userLives}
             userScore={userScore}
             screenState={screenState}

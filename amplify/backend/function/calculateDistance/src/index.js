@@ -23,14 +23,20 @@ exports.handler = async (event) => {
     return d;
   }
 
-  let x = haverSine(34.0522, 118.2437, 40.7128, 74.006);
+  let lat1 = parseFloat(event["queryStringParameters"]["lat1"]);
+  let lon1 = parseFloat(event["queryStringParameters"]["lon1"]);
+  let lat2 = parseFloat(event["queryStringParameters"]["lat2"]);
+  let lon2 = parseFloat(event["queryStringParameters"]["lon2"]);
+  let x = haverSine(lat1, lon1, lat2, lon2);
+  let y = event["queryStringParameters"]["email"];
+
   const response = {
     statusCode: 200,
     //  Uncomment below to enable CORS requests
-    //  headers: {
-    //      "Access-Control-Allow-Origin": "*",
-    //      "Access-Control-Allow-Headers": "*"
-    //  },
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "*",
+    },
     body: JSON.stringify(x),
   };
   return response;
