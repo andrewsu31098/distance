@@ -42,15 +42,6 @@
   color: white;
 }
 
-.StartForm {
-  width: 50%;
-  font-weight: 500;
-  padding: 10px;
-  color: white;
-  font-size: 1.5vh;
-  margin: 0 4em;
-}
-
 .StartScreen .ExampleRow {
   display: flex;
   justify-content: space-around;
@@ -88,7 +79,7 @@
 }
 
 .StartForm {
-  width: 50%;
+  width: 35%;
   height: auto;
   border-radius: 15px;
   background-color: #484848;
@@ -101,4 +92,5 @@
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  margin: 0 4em;
 }
