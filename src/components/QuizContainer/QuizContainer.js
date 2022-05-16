@@ -12,7 +12,8 @@ const OVER = 44;
 function scoreAnswer(guess, answer) {
   let guessInt = parseInt(guess);
   let answerInt = parseInt(answer);
-  let score = 100 - (100 * Math.abs(answerInt - guessInt)) / answerInt;
+  let score =
+    100 - 100 * Math.min(1, Math.abs(answerInt - guessInt) / answerInt);
   return parseInt(score);
 }
 
@@ -25,6 +26,8 @@ function QuizContainer(props) {
   const [userScore, setScore] = useState(0);
   const [currentCity, setCity] = useState("cairo");
 
+  const [validated, setValidated] = useState(false);
+
   function judgePlayer(guess, answer) {
     let score = scoreAnswer(guess, answer);
     setScore(userScore + score);
@@ -36,13 +39,20 @@ function QuizContainer(props) {
   function onStartClick(event) {
     setScreen(READY);
   }
+
   function onZIPSubmit(event) {
-    event.preventDefault();
-    setScreen(PLAY);
+    const form = event.currentTarget;
+
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    } else {
+      setScreen(PLAY);
+    }
+    setValidated(true);
   }
   function onZIPChange(event) {
     setZIP(event.target.value);
-    console.log(userZIP);
   }
 
   function onAnswerChange(event) {
@@ -70,7 +80,9 @@ function QuizContainer(props) {
             onStartClick={onStartClick}
             onZIPSubmit={onZIPSubmit}
             onZIPChange={onZIPChange}
+            userZIP={userZIP}
             screenState={screenState}
+            validated={validated}
           />
         );
       case READY:
@@ -79,7 +91,9 @@ function QuizContainer(props) {
             onStartClick={onStartClick}
             onZIPSubmit={onZIPSubmit}
             onZIPChange={onZIPChange}
+            userZIP={userZIP}
             screenState={screenState}
+            validated={validated}
           />
         );
       case PLAY:

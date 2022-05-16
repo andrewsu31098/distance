@@ -64,7 +64,7 @@ function PlayScreen(props) {
                 <Form.Label>Your Guess: </Form.Label>
                 <Form.Control
                   onChange={props.onAnswerChange}
-                  type="text"
+                  type="number"
                   placeholder="Miles"
                 />
                 {/* <Form.Group controlId="formFile" className="mb-3">

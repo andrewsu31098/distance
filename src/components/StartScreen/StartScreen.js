@@ -1,5 +1,6 @@
 import "./StartScreen.css";
 import { Form, Button } from "react-bootstrap";
+import FormExample from "../FormExample/FormExample";
 
 const START = 11;
 const READY = 22;
@@ -21,23 +22,12 @@ function StartScreen(props) {
         )}
         {props.screenState === READY && (
           <div className="StartForm">
-            <Form onSubmit={props.onZIPSubmit}>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>
-                  Place the starting ZIP of where you want to guess the distance
-                  from.{" "}
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="ZIP Address"
-                  onChange={props.onZIPChange}
-                />
-              </Form.Group>
-
-              <Button variant="primary" type="submit">
-                Submit
-              </Button>
-            </Form>
+            <FormExample
+              validated={props.validated}
+              onZIPSubmit={props.onZIPSubmit}
+              onZIPChange={props.onZIPChange}
+              userZIP={props.userZIP}
+            />
           </div>
         )}
       </div>
