@@ -1,3 +1,5 @@
+var axios = require("axios");
+
 exports.handler = async (event) => {
   // TODO implement
   function haverSine(lat1, lon1, lat2, lon2) {
@@ -23,12 +25,27 @@ exports.handler = async (event) => {
     return d;
   }
 
-  let lat1 = parseFloat(event["queryStringParameters"]["lat1"]);
-  let lon1 = parseFloat(event["queryStringParameters"]["lon1"]);
-  let lat2 = parseFloat(event["queryStringParameters"]["lat2"]);
-  let lon2 = parseFloat(event["queryStringParameters"]["lon2"]);
-  let x = haverSine(lat1, lon1, lat2, lon2);
-  let y = event["queryStringParameters"]["email"];
+  // let lat1 = parseFloat(event["queryStringParameters"]["lat1"]);
+  // let lon1 = parseFloat(event["queryStringParameters"]["lon1"]);
+  // let lat2 = parseFloat(event["queryStringParameters"]["lat2"]);
+  // let lon2 = parseFloat(event["queryStringParameters"]["lon2"]);
+  // let x = haverSine(lat1, lon1, lat2, lon2);
+
+  let y = await axios.get("https://jsonplaceholder.typicode.com/todos/1");
+
+  const startZIPCall = await axios(
+    `https://api.openweathermap.org/data/2.5/weather?zip=${event["queryStringParameters"]["zip"]},us&appid=676728a638b5368dca365235de652f0c`
+  );
+  const startLat = startZIPCall.data.coord.lat;
+  const startLon = startZIPCall.data.coord.lon;
+
+  const endCityCall = await axios(
+    `https://api.openweathermap.org/data/2.5/weather?q=${event["queryStringParameters"]["city"]}&appid=676728a638b5368dca365235de652f0c`
+  );
+  const endLat = endCityCall.data.coord.lat;
+  const endLon = endCityCall.data.coord.lon;
+
+  let answer = haverSine(startLat, startLon, endLat, endLon);
 
   const response = {
     statusCode: 200,
@@ -37,7 +54,7 @@ exports.handler = async (event) => {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers": "*",
     },
-    body: JSON.stringify(x),
+    body: answer,
   };
   return response;
 };

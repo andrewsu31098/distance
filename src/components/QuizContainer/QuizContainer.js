@@ -103,6 +103,8 @@ function QuizContainer(props) {
             userLives={userLives}
             userScore={userScore}
             userAnswer={userAnswer}
+            userZIP={userZIP}
+            currentCity={currentCity}
             screenState={screenState}
             judgePlayer={judgePlayer}
           />
@@ -113,8 +115,11 @@ function QuizContainer(props) {
             onAnswerChange={onAnswerChange}
             userLives={userLives}
             userScore={userScore}
+            userAnswer={userAnswer}
+            userZIP={userZIP}
+            currentCity={currentCity}
             screenState={screenState}
-            onRetrySubmit={onRetrySubmit}
+            judgePlayer={judgePlayer}
           />
         );
       default:

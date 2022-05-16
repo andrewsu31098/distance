@@ -18,10 +18,8 @@ function PlayScreen(props) {
       let params = {
         queryStringParameters: {
           email: "uncleandy",
-          lat1: "34.0522",
-          lon1: "118.2437",
-          lat2: "40.7128",
-          lon2: "80.006",
+          zip: props.userZIP,
+          city: props.currentCity,
         },
       };
 
@@ -35,10 +33,6 @@ function PlayScreen(props) {
       console.log({ err });
     }
   }
-
-  // useEffect(() => {
-  //   callAPI();
-  // }, []);
 
   var hearts = [];
 
