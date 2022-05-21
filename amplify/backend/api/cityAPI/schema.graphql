@@ -1,0 +1,4 @@
+type City @model {
+  id: ID!
+  name: String!
+}

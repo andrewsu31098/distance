@@ -24,7 +24,7 @@ function QuizContainer(props) {
   const [userAnswer, setAnswer] = useState("");
   const [userLives, setLives] = useState(3);
   const [userScore, setScore] = useState(0);
-  const [currentCity, setCity] = useState("cairo");
+  const [currentCity, setCity] = useState({ name: "cairo" });
 
   const [validated, setValidated] = useState(false);
 
@@ -105,6 +105,7 @@ function QuizContainer(props) {
             userAnswer={userAnswer}
             userZIP={userZIP}
             currentCity={currentCity}
+            setCity={setCity}
             screenState={screenState}
             judgePlayer={judgePlayer}
           />
@@ -118,6 +119,7 @@ function QuizContainer(props) {
             userAnswer={userAnswer}
             userZIP={userZIP}
             currentCity={currentCity}
+            setCity={setCity}
             screenState={screenState}
             judgePlayer={judgePlayer}
           />

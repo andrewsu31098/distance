@@ -6,12 +6,55 @@ import heart from "../../assets/heart.png";
 
 import { useEffect, useState } from "react";
 import { API } from "aws-amplify";
+import { getCity, listCitys } from "../../graphql/queries.js";
+import {
+  createCity as createCityMutation,
+  deleteCity as deleteCityMutation,
+} from "../../graphql/mutations.js";
+import { ConsoleLogger } from "@aws-amplify/core";
 
 const PLAY = 33;
 const OVER = 44;
 
+const initialFormState = { name: "" };
+
 function PlayScreen(props) {
   const [serverAnswer, setServerAnswer] = useState("?");
+  const [formData, setFormData] = useState(initialFormState);
+
+  async function fetchCitysAll() {
+    const apiData = await API.graphql({ query: listCitys });
+    console.log("List of Citys object returned");
+    console.log(apiData);
+  }
+
+  async function fetchCity() {
+    const id = "17f58ae8-b3cb-4956-9707-e121f80f321c";
+    const apiData = await API.graphql({
+      query: getCity,
+      variables: { id },
+    });
+    props.setCity(apiData.data.getCity);
+    console.log("Fetch City");
+    console.log(apiData);
+  }
+
+  async function createCity() {
+    if (!formData.name) return;
+    await API.graphql({
+      query: createCityMutation,
+      variables: { input: formData },
+    });
+    setFormData(initialFormState);
+    alert(formData.name);
+  }
+
+  async function deleteCity({ id }) {
+    await API.graphql({
+      query: deleteCityMutation,
+      variables: { input: { id } },
+    });
+  }
 
   async function calldistanceAPI() {
     try {
@@ -19,7 +62,7 @@ function PlayScreen(props) {
         queryStringParameters: {
           email: "uncleandy",
           zip: props.userZIP,
-          city: props.currentCity,
+          city: props.currentCity.name,
         },
       };
 
@@ -34,18 +77,27 @@ function PlayScreen(props) {
     }
   }
 
-  var hearts = [];
-
-  for (let i = 0; i < props.userLives; i++) {
-    hearts.push(<img key={i} className="heartIcon" src={heart} />);
-  }
-
   function onFileUpload(e) {
     alert(e.target.files[0].name.replace(".png", "looneytunes"));
   }
+  function onCityInput(e) {
+    setFormData({ ...formData, name: e.target.value });
+    console.log(e.target.value);
+  }
+
   function onAnswerSubmit(e) {
     e.preventDefault();
     calldistanceAPI();
+  }
+
+  useEffect(() => {
+    fetchCity();
+  }, []);
+
+  // Controls Lives for the player.
+  var hearts = [];
+  for (let i = 0; i < props.userLives; i++) {
+    hearts.push(<img key={i} className="heartIcon" src={heart} />);
   }
 
   return (
@@ -71,13 +123,34 @@ function PlayScreen(props) {
                 Submit
               </Button>
             </Form>
+            <input
+              onChange={onCityInput}
+              placeholder="City name"
+              value={formData.name}
+            />
+            <button onClick={createCity}>Create City</button>
+            <button
+              onClick={() => {
+                fetchCitysAll();
+              }}
+            >
+              Log database.
+            </button>
+            <button
+              onClick={() => {
+                fetchCity();
+              }}
+            >
+              Show Czekacdoskslovoalkia
+            </button>
           </div>
           <div className="infoBlock">
             <div>
-              What is the distance from you to <span>Cairo</span>?
+              What is the distance from you to{" "}
+              <span>{props.currentCity.name}</span>?
             </div>
             <div>
-              <span>Miles: </span>
+              <span>Answer (Miles): </span>
               <span>{serverAnswer}</span>
             </div>
           </div>
