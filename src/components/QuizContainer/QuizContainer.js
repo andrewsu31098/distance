@@ -24,7 +24,7 @@ function QuizContainer(props) {
   const [userAnswer, setAnswer] = useState("");
   const [userLives, setLives] = useState(3);
   const [userScore, setScore] = useState(0);
-  const [currentCity, setCity] = useState({ name: "cairo" });
+  const [currentCity, setCity] = useState({ name: "nocity" });
 
   const [validated, setValidated] = useState(false);
 

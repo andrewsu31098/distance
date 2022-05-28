@@ -1,0 +1,14 @@
+{
+  "resourceName": "citybannerstorage",
+  "policyUUID": "f4ab8cf2",
+  "bucketName": "citybannerbucket",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "READ"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

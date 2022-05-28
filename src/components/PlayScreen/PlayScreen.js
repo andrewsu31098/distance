@@ -5,7 +5,7 @@ import labanner from "../../assets/los angeles.png";
 import heart from "../../assets/heart.png";
 
 import { useEffect, useState } from "react";
-import { API } from "aws-amplify";
+import { API, Storage } from "aws-amplify";
 import { getCity, listCitys } from "../../graphql/queries.js";
 import {
   createCity as createCityMutation,
@@ -29,14 +29,21 @@ function PlayScreen(props) {
   }
 
   async function fetchCity() {
-    const id = "17f58ae8-b3cb-4956-9707-e121f80f321c";
+    const id = "f34e7fd6-8c3a-4197-b897-a64128fcde17";
     const apiData = await API.graphql({
       query: getCity,
       variables: { id },
     });
-    props.setCity(apiData.data.getCity);
+    await props.setCity(apiData.data.getCity);
+
     console.log("Fetch City");
     console.log(apiData);
+    console.log("Current city");
+    const fileAccessUrl = await Storage.get(`9.jpg`, {
+      expires: 60,
+    });
+    await props.setCity({ ...props.currentCity, imgPath: fileAccessUrl });
+    console.log(fileAccessUrl);
   }
 
   async function createCity() {
@@ -77,9 +84,13 @@ function PlayScreen(props) {
     }
   }
 
-  function onFileUpload(e) {
-    alert(e.target.files[0].name.replace(".png", "looneytunes"));
+  async function onImageUpload(e) {
+    if (!e.target.files[0]) return;
+    const file = e.target.files[0];
+    setFormData({ ...formData, image: file.name });
+    await Storage.put(file.name, file);
   }
+
   function onCityInput(e) {
     setFormData({ ...formData, name: e.target.value });
     console.log(e.target.value);
@@ -102,6 +113,29 @@ function PlayScreen(props) {
 
   return (
     <div className="PlayScreen">
+      <input
+        onChange={onCityInput}
+        placeholder="City name"
+        value={formData.name}
+      />
+      <button onClick={createCity}>Create City</button>
+      <button
+        onClick={() => {
+          fetchCitysAll();
+        }}
+      >
+        Log database.
+      </button>
+      <button
+        onClick={() => {
+          console.log("Current City: " + props.currentCity.name);
+          fetchCity();
+        }}
+      >
+        Show Current City
+      </button>
+      <input type="file" onChange={onImageUpload} />
+
       {props.screenState === PLAY && (
         <div className="inputRow">
           <div className="inputBlock">
@@ -123,26 +157,6 @@ function PlayScreen(props) {
                 Submit
               </Button>
             </Form>
-            <input
-              onChange={onCityInput}
-              placeholder="City name"
-              value={formData.name}
-            />
-            <button onClick={createCity}>Create City</button>
-            <button
-              onClick={() => {
-                fetchCitysAll();
-              }}
-            >
-              Log database.
-            </button>
-            <button
-              onClick={() => {
-                fetchCity();
-              }}
-            >
-              Show Czekacdoskslovoalkia
-            </button>
           </div>
           <div className="infoBlock">
             <div>
@@ -193,7 +207,9 @@ function PlayScreen(props) {
         </div>
       )}
 
-      <img className="bannerImg" src={labanner} />
+      {props.currentCity.name !== "nocity" && (
+        <img className="bannerImg" src={props.currentCity.imgPath} />
+      )}
     </div>
   );
 }
