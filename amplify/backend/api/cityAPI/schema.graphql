@@ -1,5 +1,11 @@
-type City @model {
+type City
+  @model
+  @key(
+    name: "cityByNumber"
+    fields: ["imageNumber"]
+    queryField: "cityByNumber"
+  ) {
   id: ID!
   name: String!
-  image: String
+  imageNumber: String!
 }

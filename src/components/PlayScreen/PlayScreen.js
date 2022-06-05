@@ -16,7 +16,7 @@ import { ConsoleLogger } from "@aws-amplify/core";
 const PLAY = 33;
 const OVER = 44;
 
-const initialFormState = { name: "" };
+const initialFormState = { name: "", imageNumber: "" };
 
 function PlayScreen(props) {
   const [serverAnswer, setServerAnswer] = useState("?");
@@ -95,6 +95,10 @@ function PlayScreen(props) {
     setFormData({ ...formData, name: e.target.value });
     console.log(e.target.value);
   }
+  function onImageNumberInput(e) {
+    setFormData({ ...formData, imageNumber: e.target.value });
+    console.log(e.target.value);
+  }
 
   function onAnswerSubmit(e) {
     e.preventDefault();
@@ -117,6 +121,11 @@ function PlayScreen(props) {
         onChange={onCityInput}
         placeholder="City name"
         value={formData.name}
+      />
+      <input
+        onChange={onImageNumberInput}
+        placeholder="Image Number"
+        value={formData.imageNumber}
       />
       <button onClick={createCity}>Create City</button>
       <button
