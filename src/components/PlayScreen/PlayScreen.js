@@ -1,7 +1,5 @@
 import "./PlayScreen.css";
 import { Form, Button } from "react-bootstrap";
-import cairobanner from "../../assets/cairo.png";
-import labanner from "../../assets/los angeles.png";
 import heart from "../../assets/heart.png";
 
 import { useRef, useEffect, useState } from "react";
@@ -20,8 +18,10 @@ const OVER = 44;
 const initialFormState = { name: "", imageNumber: "" };
 
 function PlayScreen(props) {
-  const [serverAnswer, setServerAnswer] = useState("?");
-  const [formData, setFormData] = useState(initialFormState);
+  const [serverAnswer, setServerAnswer] = useState(0);
+  const processingAnswer = useRef(false);
+
+  let answerProcessing = true;
 
   async function fetchTownsAll() {
     const apiData = await API.graphql({ query: listTowns });
@@ -45,30 +45,6 @@ function PlayScreen(props) {
     });
   }
 
-  async function createTown() {
-    if (!formData.name) return;
-    await API.graphql({
-      query: createTownMutation,
-      variables: { input: formData },
-    });
-    setFormData(initialFormState);
-    alert(formData.name);
-  }
-
-  async function deleteTown({ id }) {
-    await API.graphql({
-      query: deleteTownMutation,
-      variables: { input: { id } },
-    });
-  }
-
-  async function deleteAllTowns() {
-    const apiData = await fetchTownsAll();
-    for (let i = 0; i < apiData.data.listTowns.items.length; i++) {
-      await deleteTown({ id: apiData.data.listTowns.items[i].id });
-    }
-  }
-
   async function calldistanceAPI() {
     try {
       let params = {
@@ -80,32 +56,23 @@ function PlayScreen(props) {
       };
 
       const resultDistance = await API.get("distanceAPI", "/distance", params);
-      const cleanedResult = parseInt(resultDistance).toString();
+      const cleanedResult = parseInt(resultDistance);
       props.judgePlayer(props.userAnswer, cleanedResult);
+      setServerAnswer(0);
       setServerAnswer(cleanedResult);
+      processingAnswer.current = false;
     } catch (err) {
       console.log("This is the error:");
       console.log({ err });
     }
   }
 
-  async function onImageUpload(e) {
-    if (!e.target.files[0]) return;
-    const file = e.target.files[0];
-    setFormData({ ...formData, image: file.name });
-    await Storage.put(file.name, file);
-  }
-
-  function onCityInput(e) {
-    setFormData({ ...formData, name: e.target.value });
-  }
-  function onImageNumberInput(e) {
-    setFormData({ ...formData, imageNumber: e.target.value });
-  }
-
   function onAnswerSubmit(e) {
     e.preventDefault();
-    calldistanceAPI();
+    if (processingAnswer.current === false) {
+      processingAnswer.current = true;
+      calldistanceAPI();
+    }
   }
 
   useEffect(() => {
@@ -115,7 +82,7 @@ function PlayScreen(props) {
   // Custom effect hook that will only fire on updates, not initialization.
   const notInitialRender = useRef(false);
   useEffect(() => {
-    if (serverAnswer !== "?" && notInitialRender.current) {
+    if (serverAnswer !== 0 && notInitialRender.current) {
       sleep(3000);
       fetchRandomTown();
     } else {
@@ -124,7 +91,9 @@ function PlayScreen(props) {
   }, [serverAnswer]);
 
   useEffect(() => {
-    setServerAnswer("?");
+    let x = serverAnswer;
+    setServerAnswer(0);
+    setServerAnswer(x);
   }, [props.currentCity]);
   // Controls Lives for the player.
   var hearts = [];
@@ -159,7 +128,7 @@ function PlayScreen(props) {
             </div>
             <div>
               <span>Answer (Miles): </span>
-              <span>{serverAnswer}</span>
+              <span>{serverAnswer === 0 ? "?" : serverAnswer}</span>
             </div>
           </div>
           <div className="scoreBlock">

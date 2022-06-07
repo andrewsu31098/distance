@@ -56,7 +56,6 @@ function QuizContainer(props) {
   }
 
   function onAnswerChange(event) {
-    console.log(event.target.value);
     setAnswer(event.target.value);
   }
 
