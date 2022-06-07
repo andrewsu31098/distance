@@ -21,7 +21,7 @@
         }
       ]
     },
-    "cityAPI": {
+    "townAPI": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "output": {
@@ -30,8 +30,8 @@
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
               "apiKeyExpirationDays": 365,
-              "apiKeyExpirationDate": "2023-05-19T04:35:30.763Z",
-              "description": "cityapikey"
+              "apiKeyExpirationDate": "2023-06-05T07:54:34.419Z",
+              "description": "Town API Key"
             }
           },
           "additionalAuthenticationProviders": []

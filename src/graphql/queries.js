@@ -1,26 +1,54 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getCity = /* GraphQL */ `
-  query GetCity($id: ID!) {
-    getCity(id: $id) {
+export const getTown = /* GraphQL */ `
+  query GetTown($id: ID!) {
+    getTown(id: $id) {
       id
       name
+      imageNumber
       createdAt
       updatedAt
     }
   }
 `;
-export const listCitys = /* GraphQL */ `
-  query ListCitys(
-    $filter: ModelCityFilterInput
+export const listTowns = /* GraphQL */ `
+  query ListTowns(
+    $filter: ModelTownFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listCitys(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listTowns(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         name
+        imageNumber
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const townByNumber = /* GraphQL */ `
+  query TownByNumber(
+    $imageNumber: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelTownFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    townByNumber(
+      imageNumber: $imageNumber
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        imageNumber
         createdAt
         updatedAt
       }

@@ -57,7 +57,7 @@
     },
     "breakCircularDependency": false,
     "dependsOn": [],
-    "thirdPartyAuth": false,
+    "thirdPartyAuth": true,
     "userPoolGroups": false,
     "adminQueries": false,
     "triggers": {},

@@ -1,40 +1,43 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createCity = /* GraphQL */ `
-  mutation CreateCity(
-    $input: CreateCityInput!
-    $condition: ModelCityConditionInput
+export const createTown = /* GraphQL */ `
+  mutation CreateTown(
+    $input: CreateTownInput!
+    $condition: ModelTownConditionInput
   ) {
-    createCity(input: $input, condition: $condition) {
+    createTown(input: $input, condition: $condition) {
       id
       name
+      imageNumber
       createdAt
       updatedAt
     }
   }
 `;
-export const updateCity = /* GraphQL */ `
-  mutation UpdateCity(
-    $input: UpdateCityInput!
-    $condition: ModelCityConditionInput
+export const updateTown = /* GraphQL */ `
+  mutation UpdateTown(
+    $input: UpdateTownInput!
+    $condition: ModelTownConditionInput
   ) {
-    updateCity(input: $input, condition: $condition) {
+    updateTown(input: $input, condition: $condition) {
       id
       name
+      imageNumber
       createdAt
       updatedAt
     }
   }
 `;
-export const deleteCity = /* GraphQL */ `
-  mutation DeleteCity(
-    $input: DeleteCityInput!
-    $condition: ModelCityConditionInput
+export const deleteTown = /* GraphQL */ `
+  mutation DeleteTown(
+    $input: DeleteTownInput!
+    $condition: ModelTownConditionInput
   ) {
-    deleteCity(input: $input, condition: $condition) {
+    deleteTown(input: $input, condition: $condition) {
       id
       name
+      imageNumber
       createdAt
       updatedAt
     }

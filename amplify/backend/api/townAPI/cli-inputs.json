@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "townAPI",
+    "serviceName": "AppSync",
+    "gqlSchemaPath": "C:\\Users\\16264\\Desktop\\Coding\\React Projects\\distance\\amplify\\backend\\api\\townAPI\\schema.graphql",
+    "defaultAuthType": {
+      "mode": "API_KEY",
+      "expirationTime": 365,
+      "apiKeyExpirationDate": "2023-06-05T07:54:34.419Z",
+      "keyDescription": "Town API Key"
+    }
+  }
+}

@@ -4,14 +4,15 @@ import cairobanner from "../../assets/cairo.png";
 import labanner from "../../assets/los angeles.png";
 import heart from "../../assets/heart.png";
 
-import { useEffect, useState } from "react";
-import { API, Storage } from "aws-amplify";
-import { getCity, listCitys } from "../../graphql/queries.js";
+import { useRef, useEffect, useState } from "react";
+import { API, Storage, graphqlOperation } from "aws-amplify";
+import { getTown, townByNumber, listTowns } from "../../graphql/queries.js";
 import {
-  createCity as createCityMutation,
-  deleteCity as deleteCityMutation,
+  createTown as createTownMutation,
+  deleteTown as deleteTownMutation,
 } from "../../graphql/mutations.js";
 import { ConsoleLogger } from "@aws-amplify/core";
+import sleep from "../../functions/sleep.js";
 
 const PLAY = 33;
 const OVER = 44;
@@ -22,45 +23,57 @@ function PlayScreen(props) {
   const [serverAnswer, setServerAnswer] = useState("?");
   const [formData, setFormData] = useState(initialFormState);
 
-  async function fetchCitysAll() {
-    const apiData = await API.graphql({ query: listCitys });
-    console.log("List of Citys object returned");
+  async function fetchTownsAll() {
+    const apiData = await API.graphql({ query: listTowns });
+    console.log("List of Towns object returned");
     console.log(apiData);
+    return apiData;
   }
 
-  async function fetchCity() {
-    const id = "f34e7fd6-8c3a-4197-b897-a64128fcde17";
-    const apiData = await API.graphql({
-      query: getCity,
-      variables: { id },
-    });
-    await props.setCity(apiData.data.getCity);
+  async function fetchRandomTown() {
+    const imageNumber = parseInt(1 + Math.random() * 9).toString();
+    const apiData = await API.graphql(
+      graphqlOperation(townByNumber, { imageNumber: imageNumber })
+    );
 
-    console.log("Fetch City");
-    console.log(apiData);
-    console.log("Current city");
-    const fileAccessUrl = await Storage.get(`9.jpg`, {
+    console.log("This is what im setting currentCity to.");
+    console.log(apiData.data.townByNumber.items[0]);
+
+    const cityNumber = apiData.data.townByNumber.items[0].imageNumber;
+    console.log("City number: " + cityNumber);
+
+    const fileAccessUrl = await Storage.get(`${cityNumber}.jpg`, {
       expires: 60,
     });
-    await props.setCity({ ...props.currentCity, imgPath: fileAccessUrl });
+    await props.setCity({
+      ...apiData.data.townByNumber.items[0],
+      imgPath: fileAccessUrl,
+    });
     console.log(fileAccessUrl);
   }
 
-  async function createCity() {
+  async function createTown() {
     if (!formData.name) return;
     await API.graphql({
-      query: createCityMutation,
+      query: createTownMutation,
       variables: { input: formData },
     });
     setFormData(initialFormState);
     alert(formData.name);
   }
 
-  async function deleteCity({ id }) {
+  async function deleteTown({ id }) {
     await API.graphql({
-      query: deleteCityMutation,
+      query: deleteTownMutation,
       variables: { input: { id } },
     });
+  }
+
+  async function deleteAllTowns() {
+    const apiData = await fetchTownsAll();
+    for (let i = 0; i < apiData.data.listTowns.items.length; i++) {
+      await deleteTown({ id: apiData.data.listTowns.items[i].id });
+    }
   }
 
   async function calldistanceAPI() {
@@ -106,9 +119,23 @@ function PlayScreen(props) {
   }
 
   useEffect(() => {
-    fetchCity();
+    fetchRandomTown();
   }, []);
 
+  // Custom effect hook that will only fire on updates, not initialization.
+  const notInitialRender = useRef(false);
+  useEffect(() => {
+    if (serverAnswer !== "?" && notInitialRender.current) {
+      sleep(3000);
+      fetchRandomTown();
+    } else {
+      notInitialRender.current = true;
+    }
+  }, [serverAnswer]);
+
+  useEffect(() => {
+    setServerAnswer("?");
+  }, [props.currentCity]);
   // Controls Lives for the player.
   var hearts = [];
   for (let i = 0; i < props.userLives; i++) {
@@ -117,7 +144,7 @@ function PlayScreen(props) {
 
   return (
     <div className="PlayScreen">
-      <input
+      {/* <input
         onChange={onCityInput}
         placeholder="City name"
         value={formData.name}
@@ -127,23 +154,25 @@ function PlayScreen(props) {
         placeholder="Image Number"
         value={formData.imageNumber}
       />
-      <button onClick={createCity}>Create City</button>
+      <button onClick={createTown}>Create City</button>
       <button
         onClick={() => {
-          fetchCitysAll();
+          fetchTownsAll();
         }}
       >
         Log database.
       </button>
       <button
         onClick={() => {
-          console.log("Current City: " + props.currentCity.name);
-          fetchCity();
+          console.log("Current City: ");
+          console.log(props.currentCity);
         }}
       >
         Show Current City
       </button>
-      <input type="file" onChange={onImageUpload} />
+
+      <button onClick={deleteAllTowns}>Delete All Cities.</button>
+      <input type="file" onChange={onImageUpload} /> */}
 
       {props.screenState === PLAY && (
         <div className="inputRow">
@@ -156,10 +185,6 @@ function PlayScreen(props) {
                   type="number"
                   placeholder="Miles"
                 />
-                {/* <Form.Group controlId="formFile" className="mb-3">
-                  <Form.Label>Default file input example</Form.Label>
-                  <Form.Control type="file" onChange={onFileUpload} />
-                </Form.Group> */}
               </Form.Group>
 
               <Button variant="primary" type="submit">
@@ -215,7 +240,6 @@ function PlayScreen(props) {
           </div>
         </div>
       )}
-
       {props.currentCity.name !== "nocity" && (
         <img className="bannerImg" src={props.currentCity.imgPath} />
       )}

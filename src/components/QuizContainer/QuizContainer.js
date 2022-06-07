@@ -122,6 +122,7 @@ function QuizContainer(props) {
             setCity={setCity}
             screenState={screenState}
             judgePlayer={judgePlayer}
+            onRetrySubmit={onRetrySubmit}
           />
         );
       default:
