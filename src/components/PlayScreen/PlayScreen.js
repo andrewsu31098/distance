@@ -25,8 +25,6 @@ function PlayScreen(props) {
 
   async function fetchTownsAll() {
     const apiData = await API.graphql({ query: listTowns });
-    console.log("List of Towns object returned");
-    console.log(apiData);
     return apiData;
   }
 
@@ -36,11 +34,7 @@ function PlayScreen(props) {
       graphqlOperation(townByNumber, { imageNumber: imageNumber })
     );
 
-    console.log("This is what im setting currentCity to.");
-    console.log(apiData.data.townByNumber.items[0]);
-
     const cityNumber = apiData.data.townByNumber.items[0].imageNumber;
-    console.log("City number: " + cityNumber);
 
     const fileAccessUrl = await Storage.get(`${cityNumber}.jpg`, {
       expires: 60,
@@ -49,7 +43,6 @@ function PlayScreen(props) {
       ...apiData.data.townByNumber.items[0],
       imgPath: fileAccessUrl,
     });
-    console.log(fileAccessUrl);
   }
 
   async function createTown() {
@@ -90,7 +83,6 @@ function PlayScreen(props) {
       const cleanedResult = parseInt(resultDistance).toString();
       props.judgePlayer(props.userAnswer, cleanedResult);
       setServerAnswer(cleanedResult);
-      console.log(cleanedResult);
     } catch (err) {
       console.log("This is the error:");
       console.log({ err });
@@ -106,11 +98,9 @@ function PlayScreen(props) {
 
   function onCityInput(e) {
     setFormData({ ...formData, name: e.target.value });
-    console.log(e.target.value);
   }
   function onImageNumberInput(e) {
     setFormData({ ...formData, imageNumber: e.target.value });
-    console.log(e.target.value);
   }
 
   function onAnswerSubmit(e) {
@@ -144,36 +134,6 @@ function PlayScreen(props) {
 
   return (
     <div className="PlayScreen">
-      {/* <input
-        onChange={onCityInput}
-        placeholder="City name"
-        value={formData.name}
-      />
-      <input
-        onChange={onImageNumberInput}
-        placeholder="Image Number"
-        value={formData.imageNumber}
-      />
-      <button onClick={createTown}>Create City</button>
-      <button
-        onClick={() => {
-          fetchTownsAll();
-        }}
-      >
-        Log database.
-      </button>
-      <button
-        onClick={() => {
-          console.log("Current City: ");
-          console.log(props.currentCity);
-        }}
-      >
-        Show Current City
-      </button>
-
-      <button onClick={deleteAllTowns}>Delete All Cities.</button>
-      <input type="file" onChange={onImageUpload} /> */}
-
       {props.screenState === PLAY && (
         <div className="inputRow">
           <div className="inputBlock">
